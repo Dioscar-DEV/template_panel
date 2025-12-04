@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="modules/template/styles.css" />
+<section class="tpl">
+  <header class="tpl-header">
+    <div class="tpl-title-wrap">
+      <h2 class="tpl-title"><span data-brand-name></span> • Plantilla de Módulo</h2>
+      <p class="tpl-subtitle">Base lista para clonar y crear nuevos módulos</p>
+    </div>
+    <div class="tpl-actions">
+      <div class="tpl-search-wrap">
+        <input id="tpl-search" class="tpl-search" placeholder="Buscar…" />
+        <button id="tpl-refresh" class="tpl-btn ghost" title="Refrescar">⟲</button>
+      </div>
+      <button id="tpl-new" class="tpl-btn primary">Nuevo</button>
+    </div>
+  </header>
+
+  <div id="tpl-loading" class="tpl-loading">Cargando…</div>
+  <div id="tpl-error" class="tpl-error hidden"><span id="tpl-error-text"></span></div>
+
+  <div id="tpl-content" class="tpl-content hidden">
+    <div class="tpl-grid">
+      <aside class="tpl-list-panel">
+        <div id="tpl-empty" class="tpl-empty hidden">Sin elementos</div>
+        <div id="tpl-list" class="tpl-list"></div>
+      </aside>
+      <article class="tpl-detail-panel">
+        <div id="tpl-detail-empty" class="tpl-detail-empty">Selecciona un elemento para ver detalles</div>
+        <div id="tpl-detail" class="tpl-detail hidden">
+          <h3 id="tpl-detail-title" class="tpl-detail-title"></h3>
+          <div id="tpl-detail-meta" class="tpl-detail-meta"></div>
+          <p id="tpl-detail-desc" class="tpl-detail-desc"></p>
+          <div class="tpl-brand-block">
+            <img data-logo-src alt="logo" class="tpl-logo" />
+            <span data-brand-short class="tpl-brand-chip"></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div id="tpl-modal" class="tpl-modal" aria-hidden="true" role="dialog">
+    <div class="tpl-modal-overlay" data-close="tpl-modal"></div>
+    <div class="tpl-modal-content">
+      <div class="tpl-modal-header">
+        <h3>Crear elemento</h3>
+        <button class="tpl-modal-close" data-close="tpl-modal">✕</button>
+      </div>
+      <form id="tpl-modal-form" class="tpl-form">
+        <label class="tpl-field">
+          <span>Título</span>
+          <input id="tpl-input-title" placeholder="Título del elemento" required />
+        </label>
+        <label class="tpl-field">
+          <span>Descripción</span>
+          <textarea id="tpl-input-desc" rows="4" placeholder="Descripción breve"></textarea>
+        </label>
+        <div class="tpl-form-actions">
+          <button id="tpl-modal-cancel" class="tpl-btn">Cancelar</button>
+          <button type="submit" class="tpl-btn primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+

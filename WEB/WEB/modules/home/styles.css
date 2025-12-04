@@ -1,0 +1,30 @@
+.home-layout{ display:flex; flex-direction:column; gap:16px; animation: fadeInUp .25s ease both }
+.home-header h2{ margin:0; font-size:1.5rem; font-weight:700 }
+.home-header p{ margin:0; color:var(--muted) }
+
+.modules-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px }
+.module-card{
+  display:flex; flex-direction:row; gap:12px; align-items:center; padding:16px; border:1px solid var(--border); border-radius:16px; text-decoration:none; color:inherit;
+  background: linear-gradient(135deg, var(--panel) 0%, var(--panel-2) 100%);
+  box-shadow: var(--shadow-sm);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.module-card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-md) }
+.module-card.disabled{ opacity:.6; pointer-events:none }
+.module-icon{ width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%); color:#fff; font-size:24px; box-shadow: var(--shadow-sm) }
+.module-info h3{ margin:0 0 4px 0; font-size:1rem }
+.module-info p{ margin:0; color:var(--muted); font-size:.9rem }
+
+/* Variante compacta en pantallas pequeñas */
+@media (max-width: 640px){
+  .modules-grid{ grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:12px }
+  .module-card{ padding:14px; gap:10px }
+  .module-icon{ width:42px; height:42px; font-size:20px; border-radius:12px }
+  .module-info h3{ font-size:.95rem }
+}
+
+/* Variante estilo launcher centrado por si se usa layout más grande */
+.home-layout .modules-grid{ align-items:stretch }
+.home-layout .module-card{ min-height:72px }
+
+

@@ -1,0 +1,37 @@
+{
+  "modules": [
+    {
+      "key": "home",
+      "moduleName": "HomeModule",
+      "script": "modules/home/init.js",
+      "view": "modules/home/view.html",
+      "label": "Inicio",
+      "roles": [],
+      "perms": ["home.view"],
+      "public": false,
+      "nav": { "group": "top", "order": 0, "show": false }
+    },
+    {
+      "key": "indice",
+      "moduleName": "IndiceModule",
+      "script": "modules/indice/init.js",
+      "view": "modules/indice/view.html",
+      "label": "Índice",
+      "roles": [],
+      "perms": ["indice.view"],
+      "public": false,
+      "nav": { "group": "dropdown", "order": 10, "show": true }
+    },
+    {
+      "key": "users",
+      "moduleName": "UsersModule",
+      "script": "modules/users/init.js",
+      "view": "modules/users/view.html",
+      "label": "Usuarios",
+      "roles": [],
+      "perms": ["users.manage"],
+      "public": false,
+      "nav": { "group": "dropdown", "order": 20, "show": true }
+    }
+  ]
+}

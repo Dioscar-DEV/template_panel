@@ -1,0 +1,528 @@
+<link rel="stylesheet" href="modules/users/styles.css" />
+<section class="users-management">
+  <!-- Header principal -->
+  <header class="management-header">
+    <div class="header-title-area">
+      <h1 class="page-title">👥 Gestión de Usuarios</h1>
+      <p class="page-subtitle">Control completo de usuarios, permisos, roles e invitaciones del sistema</p>
+    </div>
+    <div class="header-actions-area">
+      <div class="quick-stats">
+        <div class="stat-item">
+          <span class="stat-value" id="total-users-stat">-</span>
+          <span class="stat-label">Usuarios</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="total-permissions-stat">-</span>
+          <span class="stat-label">Permisos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="pending-invitations-stat">-</span>
+          <span class="stat-label">Invitaciones</span>
+        </div>
+      </div>
+      <button id="global-refresh" class="btn-action primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23,4 23,10 17,10"></polyline>
+          <polyline points="1,20 1,14 7,14"></polyline>
+          <path d="M20.49,9A9,9,0,0,0,5.64,5.64L1,10m22,4L18.36,18.36A9,9,0,0,1,3.51,15"></path>
+        </svg>
+        Actualizar Todo
+      </button>
+    </div>
+  </header>
+
+  <!-- Navegación por pestañas -->
+  <nav class="tabs-navigation">
+    <div class="tabs-container">
+      <button class="tab-button active" data-tab="users">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Usuarios</span>
+        <div class="tab-indicator" id="users-indicator">-</div>
+      </button>
+      <button class="tab-button" data-tab="permissions">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <circle cx="12" cy="16" r="1"></circle>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Permisos</span>
+        <div class="tab-indicator" id="permissions-indicator">-</div>
+      </button>
+      <button class="tab-button" data-tab="roles">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+        </svg>
+        <span>Roles</span>
+        <div class="tab-indicator" id="roles-indicator">-</div>
+      </button>
+      <button class="tab-button" data-tab="invitations">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        <span>Invitaciones</span>
+        <div class="tab-indicator" id="invitations-indicator">-</div>
+      </button>
+    </div>
+    <div class="tab-underline"></div>
+  </nav>
+
+  <!-- Contenido de pestañas -->
+  <main class="tabs-content">
+    
+    <!-- PESTAÑA: USUARIOS -->
+    <section id="users-tab" class="tab-panel active">
+      <div class="panel-header">
+        <div class="panel-title">
+          <h2>Gestión de Usuarios</h2>
+          <p>Administra usuarios del sistema, sus roles y permisos individuales</p>
+        </div>
+        <div class="panel-actions">
+          <div class="search-group">
+            <input type="search" id="users-search" placeholder="Buscar por nombre o email..." />
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+          </div>
+          <select id="users-role-filter" class="filter-select">
+            <option value="">Todos los roles</option>
+            <option value="user">Usuario</option>
+            <option value="doctor">Doctor</option>
+            <option value="recepcionista">Recepcionista</option>
+            <option value="admin">Admin</option>
+            <option value="superadmin">Superadmin</option>
+          </select>
+          <button id="create-user-btn" class="btn-action success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Crear Usuario
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div id="users-loading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Cargando usuarios...</p>
+        </div>
+        <div id="users-error" class="error-state hidden">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="users-error-text"></span>
+        </div>
+        <div id="users-content" class="hidden">
+          <div class="users-grid" id="users-grid"></div>
+          <div id="users-empty" class="empty-state hidden">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <h3>No hay usuarios</h3>
+            <p>No se encontraron usuarios que coincidan con tu búsqueda</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTAÑA: PERMISOS -->
+    <section id="permissions-tab" class="tab-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <h2>Catálogo de Permisos</h2>
+          <p>Define y gestiona los permisos disponibles en el sistema</p>
+        </div>
+        <div class="panel-actions">
+          <div class="search-group">
+            <input type="search" id="permissions-search" placeholder="Buscar permisos..." />
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+          </div>
+          <button id="create-permission-btn" class="btn-action success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Crear Permiso
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div id="permissions-loading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Cargando permisos...</p>
+        </div>
+        <div id="permissions-content" class="hidden">
+          <div class="permissions-grid" id="permissions-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTAÑA: ROLES -->
+    <section id="roles-tab" class="tab-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <h2>Gestión de Roles</h2>
+          <p>Crea y administra roles personalizados con permisos específicos</p>
+        </div>
+        <div class="panel-actions">
+          <button id="create-role-btn" class="btn-action success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Crear Rol
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div id="roles-loading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Cargando roles...</p>
+        </div>
+        <div id="roles-content" class="hidden">
+          <div class="roles-grid" id="roles-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTAÑA: INVITACIONES -->
+    <section id="invitations-tab" class="tab-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <h2>Invitaciones Pendientes</h2>
+          <p>Gestiona invitaciones enviadas y controla el acceso al sistema</p>
+        </div>
+        <div class="panel-actions">
+          <div class="search-group">
+            <input type="search" id="invitations-search" placeholder="Buscar por email..." />
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+          </div>
+          <select id="invitations-status-filter" class="filter-select">
+            <option value="">Todos los estados</option>
+            <option value="pending">Pendientes</option>
+            <option value="expired">Expiradas</option>
+            <option value="accepted">Aceptadas</option>
+          </select>
+          <button id="send-invitation-btn" class="btn-action primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Enviar Invitación
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div id="invitations-loading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Cargando invitaciones...</p>
+        </div>
+        <div id="invitations-content" class="hidden">
+          <div class="invitations-grid" id="invitations-grid"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</section>
+
+<!-- MODALES -->
+
+<!-- Modal: Crear/Editar Usuario -->
+<div id="user-modal" class="modal-overlay" role="dialog" aria-hidden="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3 id="user-modal-title">Crear Usuario</h3>
+      <button class="modal-close" data-close="user-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <form id="user-form" class="modal-content">
+      <div class="form-grid">
+        <!-- Campos básicos para todos los usuarios -->
+        <div class="form-group" id="user-name-group">
+          <label for="user-name">Nombre completo</label>
+          <input type="text" id="user-name" name="user-name" placeholder="Juan Pérez" />
+        </div>
+        
+        <!-- Campos específicos para doctores -->
+        <div class="form-group doctor-only hidden" id="doctor-nombre-group">
+          <label for="doctor-nombre">Nombre</label>
+          <input type="text" id="doctor-nombre" name="doctor-nombre" placeholder="Juan" />
+        </div>
+        <div class="form-group doctor-only hidden" id="doctor-apellido-group">
+          <label for="doctor-apellido">Apellido</label>
+          <input type="text" id="doctor-apellido" name="doctor-apellido" placeholder="Pérez" />
+        </div>
+        <div class="form-group doctor-only hidden" id="doctor-cedula-group">
+          <label for="doctor-cedula">Cédula</label>
+          <input type="text" id="doctor-cedula" name="doctor-cedula" placeholder="12345678" />
+        </div>
+        <div class="form-group doctor-only hidden" id="doctor-telefono-group">
+          <label for="doctor-telefono">Teléfono</label>
+          <input type="tel" id="doctor-telefono" name="doctor-telefono" placeholder="+58 412 123 4567" />
+        </div>
+        
+        <div class="form-group">
+          <label for="user-email">Email</label>
+          <input type="email" id="user-email" name="user-email" required placeholder="usuario@empresa.com" />
+        </div>
+        <div class="form-group">
+          <label for="user-role">Rol principal</label>
+          <select id="user-role" name="user-role" required>
+            <option value="">Seleccionar rol</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-section">
+        <div class="info-card">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9,12l2,2 4,-4"></path>
+          </svg>
+          <div>
+            <strong>Contraseña temporal</strong>
+            <p>Se generará automáticamente y el usuario deberá cambiarla en su primer inicio de sesión.</p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" data-close="user-modal">Cancelar</button>
+      <button type="submit" form="user-form" class="btn-primary" id="save-user-btn">
+        <span class="btn-text">Crear Usuario</span>
+        <div class="btn-spinner hidden">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Gestión de Permisos de Usuario -->
+<div id="user-permissions-modal" class="modal-overlay large" role="dialog" aria-hidden="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="user-info-header">
+        <div class="user-avatar-large">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div>
+          <h3 id="user-permissions-title">Permisos de Usuario</h3>
+          <p id="user-permissions-subtitle">Configura permisos específicos</p>
+        </div>
+      </div>
+      <button class="modal-close" data-close="user-permissions-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-content">
+      <div class="permissions-tabs">
+        <button class="perm-tab active" data-perm-tab="role">Permisos por Rol</button>
+        <button class="perm-tab" data-perm-tab="custom">Permisos Personalizados</button>
+      </div>
+      <div class="permissions-content">
+        <div id="role-permissions-content" class="perm-tab-content active">
+          <div class="role-info-card">
+            <h4>Rol actual: <span id="current-user-role">-</span></h4>
+            <div id="role-permissions-list" class="permissions-list"></div>
+          </div>
+        </div>
+        <div id="custom-permissions-content" class="perm-tab-content">
+          <div class="custom-permissions-search">
+            <input type="search" id="custom-permissions-search" placeholder="Buscar permisos..." />
+          </div>
+          <div id="custom-permissions-list" class="permissions-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" data-close="user-permissions-modal">Cancelar</button>
+      <button type="button" class="btn-primary" id="save-user-permissions-btn">Guardar Permisos</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Crear/Editar Permiso -->
+<div id="permission-modal" class="modal-overlay" role="dialog" aria-hidden="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3 id="permission-modal-title">Crear Permiso</h3>
+      <button class="modal-close" data-close="permission-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <form id="permission-form" class="modal-content">
+      <div class="form-group">
+        <label for="permission-key">Clave del permiso</label>
+        <input type="text" id="permission-key" required placeholder="modulo.accion" />
+        <small class="field-hint">Formato: modulo.accion (ej: users.create, dashboard.view)</small>
+      </div>
+      <div class="form-group">
+        <label for="permission-label">Nombre visible</label>
+        <input type="text" id="permission-label" required placeholder="Crear usuarios" />
+      </div>
+      <div class="form-group">
+        <label for="permission-description">Descripción</label>
+        <textarea id="permission-description" rows="3" placeholder="Descripción detallada del permiso"></textarea>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" data-close="permission-modal">Cancelar</button>
+      <button type="submit" form="permission-form" class="btn-primary" id="save-permission-btn">Crear Permiso</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Enviar Invitación -->
+<div id="invitation-modal" class="modal-overlay" role="dialog" aria-hidden="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Enviar Invitación</h3>
+      <button class="modal-close" data-close="invitation-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <form id="invitation-form" class="modal-content">
+      <div class="form-group">
+        <label for="invitation-email">Email del invitado</label>
+        <input type="email" id="invitation-email" required placeholder="usuario@empresa.com" />
+      </div>
+      <div class="form-group">
+        <label for="invitation-role">Rol a asignar</label>
+        <select id="invitation-role" required>
+          <option value="">Seleccionar rol</option>
+          <option value="user">Usuario</option>
+          <option value="doctor">Doctor</option>
+          <option value="recepcionista">Recepcionista</option>
+          <option value="admin">Admin</option>
+          <option value="superadmin">Superadmin</option>
+        </select>
+      </div>
+      <div class="info-section">
+        <div class="info-card">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          <div>
+            <strong>Información importante</strong>
+            <p>La invitación expirará en 7 días y se enviará un enlace de registro por email.</p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" data-close="invitation-modal">Cancelar</button>
+      <button type="submit" form="invitation-form" class="btn-primary" id="send-invitation-btn-modal">Enviar Invitación</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Crear Rol -->
+<div id="role-modal" class="modal-overlay" role="dialog" aria-hidden="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Crear Rol</h3>
+      <button class="modal-close" data-close="role-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <form id="role-form" class="modal-content">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="role-key">Clave del rol</label>
+          <input type="text" id="role-key" required placeholder="ej: operador" />
+          <small class="field-hint">Usa minúsculas y sin espacios. Se almacenará como clave única.</small>
+        </div>
+        <div class="form-group">
+          <label for="role-label">Nombre visible</label>
+          <input type="text" id="role-label" required placeholder="Operador" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="role-description">Descripción</label>
+        <textarea id="role-description" rows="3" placeholder="Descripción del rol"></textarea>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" data-close="role-modal">Cancelar</button>
+      <button type="submit" form="role-form" class="btn-primary" id="save-role-btn">Crear Rol</button>
+    </div>
+  </div>
+  
+</div>
+
+<!-- Modal: Permisos por Rol -->
+<div id="role-permissions-modal" class="modal-overlay large" role="dialog" aria-hidden="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3 id="role-permissions-title">Permisos del Rol</h3>
+      <button class="modal-close" data-close="role-permissions-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-content">
+      <input type="hidden" id="current-role-key" />
+      <div class="custom-permissions-search">
+        <input type="search" id="role-permissions-search" placeholder="Buscar permisos..." />
+      </div>
+      <div id="role-permissions-list-role" class="permissions-list"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" data-close="role-permissions-modal">Cancelar</button>
+      <button type="button" class="btn-primary" id="save-role-permissions-btn">Guardar Permisos</button>
+    </div>
+  </div>
+</div>
+
+<!-- Campo oculto para editar usuario -->
+<input type="hidden" id="user-id" />
+
+<!-- Tooltip dinámico -->
+<div id="dynamic-tooltip" class="tooltip-container" role="tooltip"></div>

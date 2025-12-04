@@ -1,0 +1,315 @@
+<link rel="stylesheet" href="modules/indice/styles.css" />
+<section class="indice-layout">
+  <header class="indice-header">
+    <div class="title-area">
+      <h2>📚 Índice de Información</h2>
+      <p>Biblioteca de temas con descripciones y contenido estructurado</p>
+    </div>
+    <div class="actions-area">
+      <div class="search-wrapper">
+        <input id="indice-search" class="search-input" type="search" placeholder="Buscar por tema o etiqueta..." aria-label="Buscar" />
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+      </div>
+      <button id="indice-new-btn" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14"></path>
+        </svg>
+        Nuevo Tema
+      </button>
+    </div>
+  </header>
+
+  <div class="indice-body">
+    <aside class="indice-sidebar">
+      <div id="indice-list" class="indice-list" aria-live="polite"></div>
+      <div id="indice-empty" class="indice-empty hidden">No hay resultados</div>
+    </aside>
+
+    <main class="indice-main">
+      <div id="indice-detail-empty" class="detail-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--muted); margin-bottom: 16px;">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M4 4v15.5"/>
+          <path d="M20 7v10"/>
+        </svg>
+        <h3>Selecciona un tema</h3>
+        <p>Elige un tema de la biblioteca para ver su contenido completo</p>
+      </div>
+      <article id="indice-detail" class="indice-detail hidden" aria-live="polite">
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h3 id="detail-title">Tema</h3>
+            <p id="detail-description" class="detail-description"></p>
+            <div id="detail-tags" class="tag-list"></div>
+          </div>
+          <div class="detail-actions">
+            <div class="detail-controls">
+              <div class="control-group">
+                <label class="control-label">Estado</label>
+                <div class="switches-container">
+                  <label class="switch">
+                    <input id="toggle-active" type="checkbox" />
+                    <span>Activo</span>
+                    <div class="tooltip">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                      </svg>
+                      <span class="tooltip-text">Controla si el tema es visible en la biblioteca</span>
+                    </div>
+                  </label>
+                  <label class="switch">
+                    <input id="toggle-available" type="checkbox" />
+                    <span>IA</span>
+                    <div class="tooltip">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                      </svg>
+                      <span class="tooltip-text">Permite que la IA use este contenido</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="control-group">
+                <label class="control-label">
+                  Color
+                  <div class="tooltip">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                      <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    <span class="tooltip-text">Color distintivo para identificar visualmente el tema</span>
+                  </div>
+                </label>
+                <div class="detail-color-picker" id="detail-color-picker">
+                  <div class="color-option active" data-color="#2563eb" style="background: #2563eb" title="Azul"></div>
+                  <div class="color-option" data-color="#dc2626" style="background: #dc2626" title="Rojo"></div>
+                  <div class="color-option" data-color="#059669" style="background: #059669" title="Verde"></div>
+                  <div class="color-option" data-color="#d97706" style="background: #d97706" title="Naranja"></div>
+                  <div class="color-option" data-color="#7c3aed" style="background: #7c3aed" title="Morado"></div>
+                  <div class="color-option" data-color="#0891b2" style="background: #0891b2" title="Cian"></div>
+                  <div class="color-option" data-color="#be185d" style="background: #be185d" title="Rosa"></div>
+                  <div class="color-option" data-color="#374151" style="background: #374151" title="Gris"></div>
+                </div>
+                <input id="detail-color" type="hidden" />
+              </div>
+            </div>
+            
+            <div class="action-buttons">
+              <button id="edit-btn" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Editar
+              </button>
+              <button id="delete-btn" class="btn btn-danger">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3,6 5,6 21,6"></polyline>
+                  <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2"></path>
+                </svg>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </header>
+        <section class="detail-content" id="detail-content"></section>
+        <section class="detail-log">
+          <h4>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            Historial de Cambios
+          </h4>
+          <div id="detail-log-list" class="log-list"></div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <dialog id="indice-modal" class="indice-modal">
+    <form id="indice-form" method="dialog">
+      <header class="modal-header">
+        <h3 id="modal-title">📝 Nuevo Tema</h3>
+        <p class="modal-subtitle">Completa la información del tema para la biblioteca</p>
+      </header>
+      
+      <div class="form-grid">
+        <label>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M4 4v15.5"/>
+            </svg>
+            Tema *
+            <div class="tooltip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="tooltip-text">Nombre principal del tema o documento</span>
+            </div>
+          </span>
+          <input id="form-tema" type="text" required placeholder="Título del tema" />
+        </label>
+        
+        <label class="full">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+            Descripción
+            <div class="tooltip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="tooltip-text">Resumen corto que se muestra en la biblioteca</span>
+            </div>
+          </span>
+          <input id="form-descripcion" type="text" placeholder="Descripción breve del tema" />
+        </label>
+        
+        <label class="full">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+            </svg>
+            Contenido
+            <div class="tooltip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="tooltip-text">Texto completo del documento. Admite formato Markdown básico</span>
+            </div>
+          </span>
+          <textarea id="form-contenido" rows="8" placeholder="Contenido detallado del tema (admite Markdown básico)"></textarea>
+        </label>
+        
+        <label>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+            Etiquetas
+            <div class="tooltip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="tooltip-text">Palabras clave separadas por comas para facilitar la búsqueda</span>
+            </div>
+          </span>
+          <input id="form-etiquetas" type="text" placeholder="ej: guía, trámite, atención" />
+        </label>
+        
+        <label>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+            </svg>
+            Color
+            <div class="tooltip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="tooltip-text">Color distintivo para identificar visualmente el tema</span>
+            </div>
+          </span>
+          <div class="color-picker" id="color-picker">
+            <div class="color-option active" data-color="#2563eb" style="background: #2563eb" title="Azul"></div>
+            <div class="color-option" data-color="#dc2626" style="background: #dc2626" title="Rojo"></div>
+            <div class="color-option" data-color="#059669" style="background: #059669" title="Verde"></div>
+            <div class="color-option" data-color="#d97706" style="background: #d97706" title="Naranja"></div>
+            <div class="color-option" data-color="#7c3aed" style="background: #7c3aed" title="Morado"></div>
+            <div class="color-option" data-color="#0891b2" style="background: #0891b2" title="Cian"></div>
+            <div class="color-option" data-color="#be185d" style="background: #be185d" title="Rosa"></div>
+            <div class="color-option" data-color="#374151" style="background: #374151" title="Gris"></div>
+          </div>
+          <input id="form-color" type="hidden" value="#2563eb" />
+        </label>
+        
+        <div class="form-switches">
+          <label class="switch-label">
+            <input id="form-activo" type="checkbox" checked />
+            <span class="switch-text">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 5v.01M12 19v.01M20 12h.01M4 12h.01M17.07 6.93l.01.01M6.93 17.07l.01.01M17.07 17.07l.01.01M6.93 6.93l.01.01"/>
+              </svg>
+              Tema activo
+              <div class="tooltip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <span class="tooltip-text">Si está desactivado, el tema no será visible en la biblioteca</span>
+              </div>
+            </span>
+          </label>
+          
+          <label class="switch-label">
+            <input id="form-ai" type="checkbox" checked />
+            <span class="switch-text">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"/>
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+              Disponible para IA
+              <div class="tooltip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <span class="tooltip-text">Permite que la IA use este contenido para responder consultas</span>
+              </div>
+            </span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-spacer"></div>
+      
+      <div class="modal-actions">
+        <button id="modal-cancel" type="button" class="btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Cancelar
+        </button>
+        <button id="modal-save" type="submit" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17,21 17,13 7,13 7,21"/>
+            <polyline points="7,3 7,8 15,8"/>
+          </svg>
+          Guardar
+        </button>
+      </div>
+    </form>
+  </dialog>
+</section>
+
+
